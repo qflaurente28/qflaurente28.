@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assignment #4 - Payroll Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Dosis', sans-serif;
+    margin: 0;
+    background-image: url('images/background.jpg'); /* Replace 'your-image.jpg' with the path to your image file */
+    background-size: cover; /* Scales the image to cover the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-attachment: fixed; /* Keeps the image fixed during scrolling (optional) */
+    background-position: center; /* Centers the image (optional) */
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar navigation */
+  aside {
+    background: linear-gradient(180deg, #96eb93, #71b3ce);
+    width: 250px;
+    padding: 2rem 1rem;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  /* Navigation bar - vertical with spacing and hover effect */
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  nav a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    text-align: center;
+  }
+  nav a:hover:not(.active) {
+    background-color: rgba(255 255 255 / 0.3);
+  }
+  nav a.active {
+    background-color: white;
+    color: #000000;
+    font-weight: 700;
+    cursor: default;
+  }
+
+  /* Main content wrapper */
+  main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Title area */
+  .title-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+    text-align: center;
+    grid-column: 1 / -1;
+  }
+  .title-section h1 {
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    font-weight: 900;
+    color: #000000;
+    letter-spacing: 0.05em;
+  }
+
+  /* Content grid */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Payroll Table section */
+  .table-section {
+    background: white;
+    padding: 2rem;
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+  }
+  .table-section h2 {
+    border-bottom: 3px solid #000000;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  /* Forms section */
+  .forms-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .forms-section .form-group {
+     background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  .forms-section h2 {
+    border-bottom: 3px solid #000000;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  button {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    background-color: #96eb93;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  button:hover {
+    background-color: #71b3ce;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  .back-link {
+    text-align: center;
+    margin: 2rem 0;
+    grid-column: 1 / -1;
+  }
+  .back-link a {
+    color: #96eb93;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    aside {
+      width: 100%;
+      position: static;
+      height: auto;
+    }
+    main {
+      margin-left: 0;
+    }
+    nav {
+      flex-direction: row;
+      justify-content: center;
+      gap: 1rem;
+    }
+    nav a {
+      flex: 1;
+      text-align: center;
+    }
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+    .forms-section {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .forms-section .form-group {
+      flex: 1;
+      min-width: 250px;
+    }
+  }
+</style>
+</head>
+<body>
+<aside>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="Assignment 1.html">Assignment #1</a>
+    <a href="Assignment 2.html">Assignment #2</a>
+    <a href="Assignment 3.html">Assignment #3</a>
+    <a href="Assignment 4.html" class="active" aria-current="page">Assignment #4</a>
+  </nav>
+</aside>
+<main>
+  <section class="title-section" role="banner">
+    <h1>Assignment #4 - Payroll Management</h1>
+  </section>
+  
+  <div class="content-grid">
+    <!-- Payroll Table -->
+    <section class="table-section">
+      <h2>Payroll List</h2>
+      <table id="payrollTable">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Employee Name</th>
+            <th>Days Worked</th>
+            <th>Daily Rate (₱)</th>
+            <th>Gross Pay (₱)</th>
+            <th>Deduction Amount (₱)</th>
+            <th>Net Pay (₱)</th>
+          </tr>
+        </thead>
+        <tbody id="payrollBody">
+          <!-- Rows will be added here -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Forms -->
+    <section class="forms-section">
+      <!-- Add Employee -->
+      <div class="form-group">
+        <h2>Add Employee</h2>
+        <label for="empName">Employee Name:</label>
+        <input type="text" id="empName" placeholder="e.g. John Doe" />
+        <label for="daysWorked">Days Worked:</label>
+        <input type="number" id="daysWorked" placeholder="e.g. 20" min="0" step="1" />
+        <label for="dailyRate">Daily Rate (₱):</label>
+        <input type="number" id="dailyRate" placeholder="e.g. 500" min="0" step="0.01" />
+        <label for="deduction">Deduction Amount (₱):</label>
+        <input type="number" id="deduction" placeholder="e.g. 1000" min="0" step="0.01" />
+        <button type="button" onclick="addEmployee()">Add Employee</button>
+      </div>
+
+      <!-- Delete Employee -->
+      <div class="form-group">
+        <h2>Delete Employee</h2>
+        <label for="deleteLine">Enter Line Number to Delete:</label>
+        <input type="number" id="deleteLine" placeholder="e.g. 1" min="1" step="1" />
+        <button type="button" onclick="deleteEmployee()">Delete Employee</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="back-link">
+    <a href="index.html">&larr; Back to Home</a>
+  </div>
+</main>
+
+<script>
+  let employees = [];
+
+  function addEmployee() {
+    const name = document.getElementById('empName').value.trim();
+    const days = parseFloat(document.getElementById('daysWorked').value);
+    const rate = parseFloat(document.getElementById('dailyRate').value);
+    const deduction = parseFloat(document.getElementById('deduction').value);
+
+    if (!name || isNaN(days) || days < 0 || isNaN(rate) || rate < 0 || isNaN(deduction) || deduction < 0) {
+      alert("Please enter valid values for all fields.");
+      return;
+    }
+
+    const gross = days * rate;
+    const net = gross - deduction;
+
+    employees.push({ name, days, rate, deduction, gross, net });
+
+    renderTable();
+
+    // Clear inputs
+    document.getElementById('empName').value = '';
+    document.getElementById('daysWorked').value = '';
+    document.getElementById('dailyRate').value = '';
+    document.getElementById('deduction').value = '';
+  }
+
+  function deleteEmployee() {
+    const line = parseInt(document.getElementById('deleteLine').value);
+    if (isNaN(line) || line < 1 || line > employees.length) {
+      alert("Please enter a valid line number.");
+      return;
+    }
+
+    employees.splice(line - 1, 1);
+    renderTable();
+
+    // Clear input
+    document.getElementById('deleteLine').value = '';
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('payrollBody');
+    tbody.innerHTML = '';
+
+    employees.forEach((emp, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${emp.name}</td>
+        <td>${emp.days}</td>
+        <td>${emp.rate.toFixed(2)}</td>
+        <td>${emp.gross.toFixed(2)}</td>
+        <td>${emp.deduction.toFixed(2)}</td>
+        <td>${emp.net.toFixed(2)}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+</script>
+</body>
+</html>
