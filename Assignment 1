@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assignment #1 - Unit Conversion</title>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Dosis', sans-serif;
+    margin: 0;
+    background-image: url('images/background.jpg'); /* Replace 'your-image.jpg' with the path to your image file */
+    background-size: cover; /* Scales the image to cover the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-attachment: fixed; /* Keeps the image fixed during scrolling (optional) */
+    background-position: center; /* Centers the image (optional) */
+    color: #333;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar navigation */
+  aside {
+    background: linear-gradient(180deg, #96eb93, #71b3ce);
+    width: 250px;
+    padding: 2rem 1rem;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  /* Navigation bar - vertical with spacing and hover effect */
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  nav a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    text-align: center;
+  }
+  nav a:hover:not(.active) {
+    background-color: rgba(255 255 255 / 0.3);
+  }
+  nav a.active {
+    background-color: white;
+    color: #000000;
+    font-weight: 700;
+    cursor: default;
+  }
+
+  /* Main content wrapper */
+  main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Title area */
+  .title-section {
+    background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    border: 2px solid #71b3ce;
+  }
+  .title-section h1 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 900;
+    color: #000000;
+    letter-spacing: 0.05em;
+  }
+  .title-section p {
+    margin: 0;
+    font-weight: 600;
+    color: #555;
+  }
+
+  /* Calculations section - grid layout */
+  .calculations-section {
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    border: 1px solid #ddd;
+  }
+  .calculations-section .section {
+    background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid #71b3ce;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  .calculations-section .section:hover {
+    transform: translateY(-5px);
+  }
+  .calculations-section h2 {
+    border-bottom: 3px solid #96eb93;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: #333;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+  }
+  input[type="number"]:focus {
+    border-color: #96eb93;
+    outline: none;
+  }
+  button {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #96eb93, #71b3ce);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  button:hover {
+    background: linear-gradient(135deg, #71b3ce, #96eb93);
+    transform: scale(1.05);
+  }
+  .result {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #222;
+    background: #fff;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  .back-link {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .back-link a {
+    color: #96eb93;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: rgba(150, 235, 147, 0.1);
+    transition: background 0.3s ease;
+  }
+  .back-link a:hover {
+    background: rgba(150, 235, 147, 0.3);
+    text-decoration: underline;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    aside {
+      width: 100%;
+      position: static;
+      height: auto;
+    }
+    main {
+      margin-left: 0;
+    }
+    nav {
+      flex-direction: row;
+      justify-content: center;
+      gap: 1rem;
+    }
+    nav a {
+      flex: 1;
+      text-align: center;
+    }
+    .calculations-section {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<aside>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="Assignment 1.html" class="active" aria-current="page">Assignment #1</a>
+    <a href="Assignment 2.html">Assignment #2</a>  <!-- Placeholder, create file when ready -->
+    <a href="Assignment 3.html">Assignment #3</a>  <!-- Placeholder, create file when ready -->
+    <a href="Assignment 4.html">Assignment #4</a>  <!-- Placeholder, create file when ready -->
+  </nav>
+</aside>
+<main>
+  <section class="title-section" role="banner">
+    <h1>Assignment #1 - Unit Conversion</h1>
+    <p>Convert between temperature and length units with ease using these simple calculators.</p>
+  </section>
+  
+  <section class="calculations-section" role="main">
+    <!-- Celsius to Fahrenheit -->
+    <div class="section">
+      <h2>Celsius to Fahrenheit</h2>
+      <label for="celsiusInput">Enter Celsius (&deg;C):</label>
+      <input type="number" id="celsiusInput" placeholder="e.g. 25" step="any" />
+      <button type="button" onclick="convertCtoF()">Convert</button>
+      <p class="result" id="cToFResult"></p>
+    </div>
+
+    <!-- Fahrenheit to Celsius -->
+    <div class="section">
+      <h2>Fahrenheit to Celsius</h2>
+      <label for="fahrenheitInput">Enter Fahrenheit (&deg;F):</label>
+      <input type="number" id="fahrenheitInput" placeholder="e.g. 77" step="any" />
+      <button type="button" onclick="convertFtoC()">Convert</button>
+      <p class="result" id="fToCResult"></p>
+    </div>
+
+    <!-- Meters to Feet -->
+    <div class="section">
+      <h2>Meters to Feet</h2>
+      <label for="metersInput">Enter Meters (m):</label>
+      <input type="number" id="metersInput" placeholder="e.g. 10" step="any" />
+      <button type="button" onclick="convertMtoF()">Convert</button>
+      <p class="result" id="mToFResult"></p>
+    </div>
+
+    <!-- Feet to Meters -->
+    <div class="section">
+      <h2>Feet to Meters</h2>
+      <label for="feetInput">Enter Feet (ft):</label>
+      <input type="number" id="feetInput" placeholder="e.g. 32.8" step="any" />
+      <button type="button" onclick="convertFtoM()">Convert</button>
+      <p class="result" id="fToMResult"></p>
+    </div>
+  </section>
+
+  <div class="back-link">
+    <a href="index.html">&larr; Back to Home</a>
+  </div>
+</main>
+
+<script>
+  function convertCtoF() {
+    const celsius = parseFloat(document.getElementById('celsiusInput').value);
+    if (isNaN(celsius)) {
+      alert("Please enter a valid number for Celsius.");
+      return;
+    }
+    const fahrenheit = (celsius * 9/5) + 32;
+    document.getElementById('cToFResult').textContent = `${celsius} °C = ${fahrenheit.toFixed(2)} °F`;
+  }
+
+  function convertFtoC() {
+    const fahrenheit = parseFloat(document.getElementById('fahrenheitInput').value);
+    if (isNaN(fahrenheit)) {
+      alert("Please enter a valid number for Fahrenheit.");
+      return;
+    }
+    const celsius = (fahrenheit - 32) * 5/9;
+    document.getElementById('fToCResult').textContent = `${fahrenheit} °F = ${celsius.toFixed(2)} °C`;
+  }
+
+  function convertMtoF() {
+    const meters = parseFloat(document.getElementById('metersInput').value);
+    if (isNaN(meters)) {
+      alert("Please enter a valid number for Meters.");
+      return;
+    }
+    const feet = meters * 3.28084;
+    document.getElementById('mToFResult').textContent = `${meters} m = ${feet.toFixed(2)} ft`;
+  }
+
+  function convertFtoM() {
+    const feet = parseFloat(document.getElementById('feetInput').value);
+    if (isNaN(feet)) {
+      alert("Please enter a valid number for Feet.");
+      return;
+    }
+    const meters = feet / 3.28084;
+    document.getElementById('fToMResult').textContent = `${feet} ft = ${meters.toFixed(2)} m`;
+  }
+</script>
+</body>
+</html>
